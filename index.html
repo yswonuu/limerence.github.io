@@ -12,7 +12,7 @@
             background-color: #f4f4f9;
         }
         .header {
-            background-color: #8B0000;
+            background-color: #ebbff7;
             color: white;
             padding: 10px;
             text-align: center;
@@ -24,7 +24,7 @@
             margin: 0 auto;
         }
         .menu {
-            background-color: #8B0000;
+            background-color: #ebbff7;
             color: white;
             padding: 15px;
             display: flex;
@@ -52,13 +52,13 @@
         .search button {
             padding: 10px;
             border: none;
-            background-color: #8B0000;
+            background-color: #7493f9;
             color: white;
             border-radius: 0 5px 5px 0;
             cursor: pointer;
         }
         .search button:hover {
-            background-color: #600000;
+            background-color: #7493f9;
         }
         .intro {
             text-align: center;
@@ -87,7 +87,7 @@
             margin: 10px 0;
         }
         .product-price {
-            color: #8B0000;
+            color: #7493f9;
             font-weight: bold;
         }
         .auth-links {
@@ -99,18 +99,89 @@
         .auth-links a {
             text-decoration: none;
             color: white;
-            background-color: #8B0000;
+            background-color: #7493f9;
             padding: 10px 20px;
             border-radius: 5px;
         }
         .auth-links a:hover {
-            background-color: #600000;
+            background-color: #4a6bda;
+        }
+        /* 註冊表單樣式 */
+        .register-form {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            z-index: 1000;
+        }
+        .register-form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .register-form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #7493f9;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .register-form button:hover {
+            background-color: #4a6bda;
+        }
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        /* 驗證碼樣式 */
+        .captcha-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .captcha-container span {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+            background-color: #ebf1fa;
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            display: inline-block;
+        }
+        .captcha-container button {
+            padding: 5px 10px;
+            background-color: #7493f9;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .captcha-container button:hover {
+            background-color: #4a6bda;
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <img src="https://via.placeholder.com/150" alt="明星周邊 LOGO">
+        <img src="資料庫管理作業/頭像.JPEG" alt="明星周邊 LOGO">
     </div>
     <div class="menu">
         <div class="menu-item">最新消息</div>
@@ -119,8 +190,8 @@
         <div class="menu-item">粉絲活動</div>
         <div class="menu-item">聯繫我們</div>
         <div class="auth-links">
-            <a href="#">會員註冊</a>
-            <a href="#">登入</a>
+            <a href="javascript:void(0);" id="registerBtn" onclick="openRegisterForm()">會員註冊</a>
+            <a href="javascript:void(0);" id="loginBtn" onclick="login()">登入</a>
         </div>
     </div>
     <div class="content">
@@ -149,5 +220,114 @@
             </div>
         </div>
     </div>
+
+    <!-- 註冊表單 -->
+    <div class="overlay" id="overlay" onclick="closeRegisterForm()"></div>
+    <div class="register-form" id="registerForm">
+        <h2>會員註冊</h2>
+        <input type="email" placeholder="Gmail" id="registerEmail">
+        <input type="password" placeholder="密碼" id="registerPassword">
+        
+        <!-- 驗證碼區塊 -->
+        <div class="captcha-container">
+            <input type="text" placeholder="請輸入驗證碼" id="captchaCode">
+            <span id="captchaDisplay"></span> <!-- 顯示隨機驗證碼 -->
+            <button type="button" onclick="generateCaptcha()">重新產生</button>
+        </div>
+
+        <button onclick="submitRegistration()">註冊</button>
+    </div>
+
+    <script>
+        // 生成隨機驗證碼並顯示在畫面上
+        function generateCaptcha() {
+            const captcha = Math.random().toString(36).substring(2, 8).toUpperCase();  // 生成一個隨機的字母數字字符串
+            document.getElementById('captchaDisplay').textContent = captcha;
+            document.getElementById('captchaCode').setAttribute('data-captcha', captcha);  // 記錄生成的驗證碼
+        }
+
+        // 開啟註冊表單
+        function openRegisterForm() {
+            document.getElementById('registerForm').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+            generateCaptcha();  // 生成並顯示驗證碼
+        }
+
+        // 關閉註冊表單
+        function closeRegisterForm() {
+            document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        // 註冊表單提交
+        function submitRegistration() {
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const captcha = document.getElementById('captchaCode').value;
+            const correctCaptcha = document.getElementById('captchaCode').getAttribute('data-captcha');  // 取得生成的驗證碼
+
+            if (email && password && captcha === correctCaptcha) {
+                localStorage.setItem('email', email);
+                localStorage.setItem('password', password);
+                alert('註冊成功！');
+                closeRegisterForm();
+                toggleAuthButton(true);
+            } else if (captcha !== correctCaptcha) {
+                alert('驗證碼錯誤');
+            } else {
+                alert('請填寫所有欄位');
+            }
+        }
+
+        // 顯示或隱藏註冊和登入按鈕
+        function toggleAuthButton(isLoggedIn) {
+            if (isLoggedIn) {
+                document.getElementById('loginBtn').textContent = '登出';
+                document.getElementById('loginBtn').onclick = logout;
+                document.getElementById('registerBtn').style.display = 'none';
+            } else {
+                document.getElementById('loginBtn').textContent = '登入';
+                document.getElementById('loginBtn').onclick = login;
+                document.getElementById('registerBtn').style.display = 'inline-block';
+            }
+        }
+
+        // 登入
+        function login() {
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+
+            const savedEmail = localStorage.getItem('email');
+            const savedPassword = localStorage.getItem('password');
+
+            if (email === savedEmail && password === savedPassword) {
+                alert('登入成功！');
+                toggleAuthButton(true);
+            } else {
+                alert('登入失敗，請檢查帳號或密碼');
+            }
+        }
+
+        // 登出
+        function logout() {
+            localStorage.removeItem('email');
+            localStorage.removeItem('password');
+            alert('已登出！');
+            toggleAuthButton(false);
+        }
+
+        // 頁面加載時檢查登入狀態
+        window.onload = function() {
+            const email = localStorage.getItem('email');
+            if (email) {
+                toggleAuthButton(true);
+            } else {
+                toggleAuthButton(false);
+            }
+        }
+    </script>
 </body>
 </html>
+
+
+
