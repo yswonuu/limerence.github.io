@@ -222,12 +222,14 @@
                 const status = record.status !== undefined ? record.status : "暫無";
                 const weight = record.weight !== undefined ? record.weight : "暫無";
                 const shippingCost = record.shippingCost !== undefined ? record.shippingCost : "暫無";
+                const note = record.note !== undefined ? record.note : "暫無";
                 html += `<tr>
                             <td>${date}</td>
                             <td>${item}</td>
                             <td>${status}</td>
                             <td>${weight}</td>
                             <td>${shippingCost}</td>
+                            <td>${note}</td>
                         </tr>`;
             });
             html += "</table>";
